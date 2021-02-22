@@ -14,7 +14,7 @@ jobs:
          command: |
            cd /var/www/api-votoe/projektm/
            git pull
-           dotnet build
+           dotnet build --force
            dotnet publish --configuration Release
            sudo systemctl restart kestrel-helloapp.service
          host: ${{ secrets.REMOTE_HOST }}
