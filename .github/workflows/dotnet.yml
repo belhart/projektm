@@ -16,7 +16,7 @@ jobs:
            git pull
            dotnet build
            dotnet publish --configuration Release
-           sudo systemctl reload kestrel-helloapp.service
+           sudo systemctl restart kestrel-helloapp.service
          host: ${{ secrets.REMOTE_HOST }}
          user: ${{ secrets.REMOTE_USER}}
          pass: ${{ secrets.REMOTE_PASSWORD}}
