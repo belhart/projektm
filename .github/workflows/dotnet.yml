@@ -1,0 +1,22 @@
+name: Deploy application
+ 
+on:
+  push:
+    branches: [ master ]
+ 
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy ASP.NET core App
+        uses: fifsky/ssh-action@master
+        with:
+         command: |
+           cd /var/www/api-votoe/projektm/
+           git pull
+           dotnet build
+           dotnet publish --configuration Release
+           sudo systemctl restart kestrel-helloapp.service
+         host: ${{ secrets.REMOTE_HOST }}
+         user: ${{ secrets.REMOTE_USER}}
+         pass: ${{ secrets.REMOTE_PASSWORD}}
