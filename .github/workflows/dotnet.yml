@@ -12,11 +12,13 @@ jobs:
         uses: fifsky/ssh-action@master
         with:
          command: |
-           cd /var/www/api-votoe/projektm/
-           git pull
+           cd /var/www/api-votoe/
+           rm -R projetkm
+           git pull https://github.com/belhart/projektm.git
            dotnet build --force
            dotnet publish --configuration Release --force
-           sudo systemctl restart kestrel-helloapp.service
+           sudo systemctl stop kestrel-helloapp.service
+           sudo systemctl start kestrel-helloapp.service
          host: ${{ secrets.REMOTE_HOST }}
          user: ${{ secrets.REMOTE_USER}}
          pass: ${{ secrets.REMOTE_PASSWORD}}
