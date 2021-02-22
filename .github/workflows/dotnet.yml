@@ -18,8 +18,7 @@ jobs:
            cd projektm
            dotnet build --force
            dotnet publish --configuration Release --force
-           sudo systemctl stop kestrel-helloapp.service
-           sudo systemctl start kestrel-helloapp.service
+           sudo systemctl restart kestrel-helloapp.service
          host: ${{ secrets.REMOTE_HOST }}
          user: ${{ secrets.REMOTE_USER}}
          pass: ${{ secrets.REMOTE_PASSWORD}}
