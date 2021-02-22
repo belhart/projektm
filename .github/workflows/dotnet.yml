@@ -15,6 +15,7 @@ jobs:
            cd /var/www/api-votoe/
            rm -R projetkm
            git pull https://github.com/belhart/projektm.git
+           cd projektm
            dotnet build --force
            dotnet publish --configuration Release --force
            sudo systemctl stop kestrel-helloapp.service
