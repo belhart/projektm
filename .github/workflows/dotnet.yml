@@ -16,8 +16,7 @@ jobs:
            git pull
            dotnet build
            dotnet publish --configuration Release
-           cd /var/www/api-votoe/projektm/WebApplication13/bin/Release/netcoreapp3.1/publish/
-           sudo dotnet WebApplication13.dll
+           sudo systemctl reload kestrel-helloapp.service
          host: ${{ secrets.REMOTE_HOST }}
          user: ${{ secrets.REMOTE_USER}}
          pass: ${{ secrets.REMOTE_PASSWORD}}
