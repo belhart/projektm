@@ -11,8 +11,13 @@ jobs:
       - name: Deploy ASP.NET core App
         uses: fifsky/ssh-action@master
         with:
-         command:
-           ${{ secrets.COMMANDCHAIN }}
+         command: |
+           cd /var/www/api-votoe/projektm/
+           git pull
+           dotnet build
+           dotnet publish --configuration Release
+           cd /var/www/api-votoe/projektm/WebApplication13/bin/Release/netcoreapp3.1/publish/
+           sudo dotnet WebApplication13.dll
          host: ${{ secrets.REMOTE_HOST }}
          user: ${{ secrets.REMOTE_USER}}
          pass: ${{ secrets.REMOTE_PASSWORD}}
