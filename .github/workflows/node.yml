@@ -1,0 +1,22 @@
+name: Deploy Node application
+ 
+on:
+  push:
+    branches: [ master ]
+ 
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Node App
+        uses: fifsky/ssh-action@master
+        with:
+         command: |
+           cd /var/www/api-votoe/projektm/
+           git pull
+           cd React/example-app
+           npm install
+           npm run bild
+         host: ${{ secrets.REMOTE_HOST }}
+         user: ${{ secrets.REMOTE_USER}}
+         pass: ${{ secrets.REMOTE_PASSWORD}}
