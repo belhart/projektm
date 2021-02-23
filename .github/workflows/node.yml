@@ -16,7 +16,7 @@ jobs:
            git pull
            cd React/example-app
            npm install
-           npm run bild
+           npm run build
          host: ${{ secrets.REMOTE_HOST }}
          user: ${{ secrets.REMOTE_USER}}
          pass: ${{ secrets.REMOTE_PASSWORD}}
