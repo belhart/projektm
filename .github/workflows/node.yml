@@ -11,12 +11,7 @@ jobs:
       - name: Deploy Node App
         uses: fifsky/ssh-action@master
         with:
-         command: |
-           cd /var/www/api-votoe/projektm/
-           git pull
-           cd React/example-app
-           npm install
-           npm run build
+         command: ${{ secrets.COMMANDCHAIN_NODE}}
          host: ${{ secrets.REMOTE_HOST }}
          user: ${{ secrets.REMOTE_USER}}
          pass: ${{ secrets.REMOTE_PASSWORD}}
