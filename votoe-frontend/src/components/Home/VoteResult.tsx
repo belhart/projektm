@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./VoteResult.scss";
-import HOKLogo from "../../assets/img/nikhok_logo.jpg";
+import OeLogo from "../../assets/img/oeLogo.png";
 import CheckBoxOutlinedIcon from "@material-ui/icons/CheckBoxOutlined";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
@@ -23,6 +23,13 @@ const VoteResult: React.FC<IVoteResult> = ({
   isClosed,
   isFinished,
 }) => {
+  const [allVotes, setAllVotes] = useState<number>(0);
+
+  useEffect(()=>{
+    const newAllVotes = allVotes + yesVotes + noVotes + absentionVotes; 
+    setAllVotes(newAllVotes);
+  },[])
+
   return (
     <div className="voteResult">
       <div className="voteResult_container">
@@ -33,7 +40,7 @@ const VoteResult: React.FC<IVoteResult> = ({
         </div>
 
         <div className="voteResult_img">
-          <img src={HOKLogo} alt="" loading="lazy" />
+          <img src={OeLogo} alt="" loading="lazy" />
         </div>
 
         <div className="voteResult_result">
@@ -44,7 +51,7 @@ const VoteResult: React.FC<IVoteResult> = ({
                 <span
                   className="option_votes"
                   style={{
-                    width: `${yesVotes * 10}%`,
+                    width: `${(yesVotes/allVotes)*100}%`,
                     maxWidth: "100%",
                     background: "#1d2a4d",
                   }}
@@ -65,7 +72,7 @@ const VoteResult: React.FC<IVoteResult> = ({
                 <span
                   className="option_votes"
                   style={{
-                    width: `${noVotes * 100}%`,
+                    width: `${(noVotes/allVotes)*100}%`,
                     maxWidth: "100%",
                     background: "#1d2a4d",
                   }}
@@ -86,7 +93,7 @@ const VoteResult: React.FC<IVoteResult> = ({
                 <span
                   className="option_votes"
                   style={{
-                    width: `${absentionVotes * 10}%`,
+                    width: `${(absentionVotes/allVotes)*100}%`,
                     maxWidth: "100%",
                     background: "#1d2a4d",
                   }}

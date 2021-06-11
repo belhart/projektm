@@ -60,6 +60,7 @@ namespace VotOEApi.Controllers
         /// </summary>
         /// <param name="id">The id of the vote to be deleted</param>
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin,Editor")]
         public void DeleteVote(int id)
         {
             this.oneVoteLogic.DeleteOneVote(id);
@@ -76,47 +77,14 @@ namespace VotOEApi.Controllers
         {
             var associatedVote = this.oneVoteLogic.getAssociatedVote(vote);
             var userName = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //if (this.User.IsInRole(associatedVote.RequiredRole))
-            if (await this.authLogic.HasRoleByName(userName,associatedVote.RequiredRole))
+            if (await this.authLogic.HasRoleByName(userName, associatedVote.RequiredRole))
             {
                 this.oneVoteLogic.CreateOneVote(vote, userName);
-
-                //Code is correct but still stays in that role after removing.
                 await this.authLogic.RemoveUserFromRole(userName, associatedVote.RequiredRole);
-                //this.authLogic.RemoveUserFromRole(this.User.Identity.Name, associatedVote.RequiredRole);
-
-
-
-                //TODO Fix this to use the lines below instead of requiring an instance of authlogic
-                //These lines of command work, but for some reason at the next request the role is still on the user after it was remove here.
-                /*var role = ((ClaimsIdentity)User.Identity).Claims
-                        .Where(c => c.Type == ClaimTypes.Role && c.Value == associatedVote.RequiredRole)
-                        .FirstOrDefault();
-
-                var identity = this.User.Identity as ClaimsIdentity;
-                identity.RemoveClaim(role);*/
-
-
-
-
-
                 return Ok();
             }
             return Unauthorized();
         }
-
-        /*[Authorize(Roles = "Admin,Editor,Hallgató")]
-        [HttpPost]
-        public IActionResult SubmitVote([FromBody] OneVote vote)
-        {
-            var associatedVote = this.oneVoteLogic.getAssociatedVote(vote);
-            if (this.User.IsInRole(associatedVote.RequiredRole))
-            {
-                this.oneVoteLogic.CreateOneVote(vote);
-                return Ok();
-            }
-            return Unauthorized();
-        }*/
 
         /// <summary>
         /// Updates a single vote
@@ -125,6 +93,7 @@ namespace VotOEApi.Controllers
         /// <param name="vote">OneVote Object, containing the details of the vote to be updated</param>
         /// <returns>Http200 if ok, 400 if not</returns>
         [HttpPut("{oldId}")]
+        [Authorize(Roles = "Admin,Editor")]
         public IActionResult UpdateVote(int oldId, [FromBody] OneVote vote)
         {
             if (this.oneVoteLogic.UpdateOneVote(oldId, vote)) return Ok();

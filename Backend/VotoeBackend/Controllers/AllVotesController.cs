@@ -20,7 +20,7 @@ namespace VotOEApi.Controllers
     /// </summary>
     [Route("[controller]")]
     [ApiController]
-    
+
     public class AllVotesController : ControllerBase
     {
         private IAllVotesLogic allVotesLogic;
@@ -62,6 +62,7 @@ namespace VotOEApi.Controllers
         /// </summary>
         /// <param name="id">The ID of the AllVotes to be deleted</param>
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin,Editor")]
         public void DeleteVote(int id)
         {
             this.allVotesLogic.DeleteVote(id);
@@ -86,26 +87,11 @@ namespace VotOEApi.Controllers
         /// <param name="oldId">The original id of the vote to be updated</param>
         /// <param name="vote">AllVotes object, containing the details of the vote to be updated</param>
         [HttpPut("{oldId}")]
+        [Authorize(Roles = "Admin,Editor")]
         public void UpdateVote(int oldId, [FromBody] AllVotes vote)
         {
             this.allVotesLogic.UpdateVote(oldId, vote);
         }
-
-
-        //[Route("create")]
-        //[HttpPost]
-        //public ActionResult CreateNewVote([FromBody] AllVotes thisVote)
-        //{
-        //    //var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-        //    if (this.User.IsInRole(voteCreation.RequiredRole))
-        //    {
-        //        this.allVotesLogic.CreateVote(voteCreation);
-        //        return Ok();
-        //    }
-        //    return Unauthorized();
-        //    this.allVotesLogic.CreateVote(thisVote);
-        //    return Ok();
-        //}
 
         /// <summary>
         /// Returns all the active votes
@@ -131,12 +117,6 @@ namespace VotOEApi.Controllers
             var roles = ((ClaimsIdentity)User.Identity).Claims
                 .Where(c => c.Type == ClaimTypes.Role)
                 .Select(c => c.Value).ToList();
-
-            //var userIdentity = (ClaimsIdentity)User.Identity;
-            //var claims = userIdentity.Claims;
-            //var roleClaimType = userIdentity.RoleClaimType;
-            //var roles = claims.Where(c => c.Type == ClaimTypes.Role).ToList();
-
             return allVotesLogic.GetAllAvaliableVotes(roles);
         }
 
